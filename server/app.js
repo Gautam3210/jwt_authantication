@@ -1,40 +1,50 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const userSchema = require('./module/db_config')
+const express = require("express");
+const mongoose = require("mongoose");
+const userSchema = require("./module/db_config");
 
-const app = express()
+const app = express();
 app.use(express.urlencoded());
-app.use(express.json())
+app.use(express.json());
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.get('/',(req, res)=>{
-  res.render('home')
-})
+app.get("/", (req, res) => {
+  res.render("home");
+});
 
-app.get('/signup',(req, res)=>{
-  res.render('signUp');
-})
+app.get("/signup", (req, res) => {
+  res.render("signUp");
+});
 
-app.post('/signup', async (req, res)=>{
-  const {name, email, password} = req.body;
+app.post("/signup", async (req, res) => {
+  const { name, email, password } = req.body;
   console.log(name);
   console.log(email);
   console.log(password);
   const user = new userSchema({
     name,
     email,
-    password
-  })
-  const data = await user.save()
-  res.redirect('/login');
-})
+    password,
+  });
+  const data = await user.save();
+  res.redirect("/login");
+});
 
-app.get('/login', (req, res)=>{
-  res.render('logIn');
-})
+app.get("/login", (req, res) => {
+  res.render("logIn");
+});
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await userSchema.find({ email, password });
 
-app.listen(5000, ()=>{
-  console.log("server is running on port 5000")
-})
+  if (user.length === 0) {
+    res.redirect("/signup");
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.listen(5000, () => {
+  console.log("server is running on port 5000");
+});
