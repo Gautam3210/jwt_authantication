@@ -23,7 +23,7 @@ loginRoute.post("/login", async (req, res) => {
     const uid = uuidv4();
     res.cookie("uid", uid);
     mappingSet(uid, user);
-    res.render("home", userInfo=user[0]); 
+    res.render("home", userInfo=user); 
   }
 });
 
