@@ -18,9 +18,9 @@ loginRoute.post("/login", async (req, res) => {
   if (!user) {
     res.redirect("/signup");
   } else {
-    const uid = uuidv4();
-    res.cookie("uid", uid);
-    mappingSet(uid, user);
+   
+    const token = mappingSet(user);
+    res.cookie("uid", token);
     res.render("home", (userInfo = user));
   }
 });

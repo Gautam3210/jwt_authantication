@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 app.use(express.urlencoded());
-app.use(express.json());
+app.use(express.json());   
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
