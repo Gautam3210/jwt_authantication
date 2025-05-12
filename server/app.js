@@ -3,6 +3,8 @@ const express = require("express");
 const { loginRoute } = require("./routes/loginRoute");
 const { signinRoute } = require("./routes/signupRoute");
 const { mappingGet } = require("./service/mappingUid");
+const todoItems = require("./module/todo_db");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(express.urlencoded());
@@ -25,12 +27,21 @@ const loggedInUserOnly = (req, res, next) => {
   next();
 };
 
-app.get("/", (req, res) => {
-  res.render("home");
+app.get("/todo", loggedInUserOnly, async (req, res) => {
+  const item = await todoItems.find({
+    userId: new mongoose.Types.ObjectId(req.user._id),
+  });
+  res.render("todo", (todoItem = item));
 });
 
-app.get("/todo", loggedInUserOnly, (req, res) => {
-  res.render("todo");
+app.post("/todo", loggedInUserOnly, async (req, res) => {
+  const todoItem = req.body.inputValue;
+  const item = new todoItems({
+    todo: todoItem,
+    userId: req.user._id,
+  });
+  const data = await item.save();
+  res.render("/todo");
 });
 
 app.use("/", signinRoute);

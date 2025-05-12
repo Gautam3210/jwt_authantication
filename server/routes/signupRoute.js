@@ -1,5 +1,5 @@
 const express = require("express");
-const userSchema = require("../module/db_config");
+const userSchema = require("../module/user_db");
 
 const signinRoute = express.Router();
 

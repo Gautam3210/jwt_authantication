@@ -1,56 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>To-Do List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      padding: 40px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 40px;
+      }
 
-    .todo-container {
-      background: white;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+      .todo-container {
+        background: white;
+        padding: 20px;
+        max-width: 400px;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-    li {
-      background: #e6e6e6;
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
+      li {
+        background: #e6e6e6;
+        margin: 10px 0;
+        padding: 10px 15px;
+        border-radius: 4px;
+        font-size: 16px;
+      }
 
-  <div class="todo-container">
-    <h2>My To-Do List</h2>
-    <ul>
-      <li>✅ Complete homework</li>
-      <li>📞 Call mom</li>
-      <li>📚 Read 30 pages of a book</li>
-      <li>🏃 Go for a run</li>
-      <li>🧹 Clean the room</li>
-    </ul>
-  </div>
+      .input-container {
+        display: flex;
+        margin-bottom: 15px;
+      }
 
-</body>
+      input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px 0 0 4px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 8px 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-container">
+      <h2>My To-Do List</h2>
+      <div class="input-container">
+        <input type="text" id="todoInput" placeholder="Enter a new task..." />
+        <button onclick="addTodo()">Add</button>
+      </div>
+      <ul id="todoList">
+        <% todoItem.map((item)=>{ %>
+          <li><%= item.todo %></li>
+        <%}) %>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      function addTodo() {
+        const input = document.getElementById("todoInput");
+        const value = input.value.trim();
+        if (value !== "") {
+          axios.post('http://localhost:5000/todo',{inputValue: value})
+          input.value = "";
+        }
+      }
+    </script>
+  </body>
 </html>
