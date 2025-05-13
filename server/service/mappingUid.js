@@ -4,6 +4,7 @@ const secretKey = 'gautam@3210'
 
 function mappingSet(user) {
   const token = jwt.sign({
+    _id: user._id,
     name: user.name,
     email: user.email
   },secretKey)

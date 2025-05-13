@@ -18,7 +18,6 @@ loginRoute.post("/login", async (req, res) => {
   if (!user) {
     res.redirect("/signup");
   } else {
-   
     const token = mappingSet(user);
     res.cookie("uid", token);
     res.render("home", (userInfo = user));

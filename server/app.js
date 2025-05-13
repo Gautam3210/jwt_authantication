@@ -8,13 +8,13 @@ const mongoose = require("mongoose");
 
 const app = express();
 app.use(express.urlencoded());
-app.use(express.json());   
+app.use(express.json());
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
 const loggedInUserOnly = (req, res, next) => {
-  const userUid = req.cookies.uid;
+  const userUid = req.cookies.uid;  
 
   if (!userUid) {
     return res.redirect("/login");
@@ -27,14 +27,17 @@ const loggedInUserOnly = (req, res, next) => {
   next();
 };
 
-app.get("/todo", loggedInUserOnly, async (req, res) => {
+app.use(loggedInUserOnly)
+
+app.get("/todo", async (req, res) => {
   const item = await todoItems.find({
     userId: new mongoose.Types.ObjectId(req.user._id),
   });
+  
   res.render("todo", (todoItem = item));
 });
 
-app.post("/todo", loggedInUserOnly, async (req, res) => {
+app.post("/todo", async (req, res) => {
   const todoItem = req.body.inputValue;
   const item = new todoItems({
     todo: todoItem,
